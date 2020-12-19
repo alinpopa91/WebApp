@@ -1,0 +1,47 @@
+<div class="container text-center">
+    <h1>{{title}}</h1>
+</div>
+<div class="container">
+  <form [formGroup]="focForm" class="form-group">
+    <div class="d-flex">
+      <div class="form-group w-50">
+        <label class="control-label"><i>*</i> Search</label>
+        <input type="text" formControlName="searchField" class="form-control w-100" [(ngModel)]="searchSelected" placeholder="&#xF002; Search">
+      </div>
+      <div class="form-group w-25">
+        <label class="control-label"><i class="fa fa-search"></i> Category</label>
+        <select [(ngModel)]="categorySelected" formControlName="categoryField" class="form-control w-100">
+          <option [ngValue]="option.value" *ngFor="let option of categoryOptions">{{option.name}}</option>
+        </select>
+      </div>
+      <div class="form-group w-25">
+        <label class="control-label"><i>*</i> Size</label>
+        <select [(ngModel)]="sizeSelected" formControlName="sizeField" class="form-control w-100">
+          <option [ngValue]="option.value" *ngFor="let option of sizeOptions">{{option.name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="d-flex">
+      <button (click)="SearchArt()" class="btn btn-success w-25">Search</button>
+      <div class="row">
+
+        <app-history-search [lastSearch]="searchTextForHistory" [lastCategory]="categorySelected" [lastSize]="sizeSelected"></app-history-search>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container">
+
+  <div class="row">
+    <p *ngIf="!results"><em>Loading...</em></p>
+
+    <div class="col-md-3 searchBox" *ngFor="let result of results">
+      <h2>{{result.name}}</h2>
+      <p>{{result.description}}</p>
+      <i>{{result.category}}</i>
+    </div>
+
+  </div>
+
+</div>

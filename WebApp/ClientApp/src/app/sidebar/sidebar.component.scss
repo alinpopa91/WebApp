@@ -1,0 +1,39 @@
+.container {
+  padding-top: 50px;
+  padding-bottom: 10px;
+  color: #405065;
+  width:100%;
+}
+
+.search-hero {
+  width:100%;
+  //padding-bottom: 50px;
+  //margin: auto;
+  //max-width: 500px;
+}
+
+.form-control {
+  box-shadow: 0 10px 40px 0 #b0c1d9;
+}
+
+.form-control::placeholder {
+  font-family: FontAwesome;
+}
+
+.left {
+  float: left;
+  width: 25%;
+}
+
+.clear {
+  clear: both;
+}
+
+.searchBox {
+    border:solid;
+    text-align:center;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
