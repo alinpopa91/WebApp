@@ -1,5 +1,4 @@
 import { Component, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-history-search',
