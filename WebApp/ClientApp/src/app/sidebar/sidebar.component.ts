@@ -9,7 +9,7 @@ import {
   Output,
   EventEmitter,
   Inject
-} from '../data-service/node_modules/@angular/core';
+} from '@angular/core';
 import { FormGroup, FormBuilder, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 @Component({
