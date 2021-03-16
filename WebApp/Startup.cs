@@ -14,10 +14,12 @@ using WebApp.DAL.Context;
 using WebApp.DAL.Persistence.Abstract;
 using WebApp.DAL.Persistence.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using WebApp.Authorization;
-using WebApp.Authorization.Handlers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using WebApp.Middleware;
 
 namespace WebApp
 {
@@ -33,6 +35,31 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration["Jwt:Issuer"],
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"])),
+                        ClockSkew = TimeSpan.Zero // Override the default clock skew of 5 mins
+                                };
+                    services.AddCors();
+                });
+
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy(Policies.Admin, Policies.AdminPolicy());
+                config.AddPolicy(Policies.User, Policies.UserPolicy());
+            });
+
             services.AddMemoryCache();
             services.AddScoped<DbContext, WinArtContext>();
             services.AddDbContext<WinArtContext>(options =>
@@ -51,15 +78,6 @@ namespace WebApp
             services.AddScoped<IArtDirectoryRepository, ArtDirectoryRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ILogRepository, LogRepository>();
-            services.AddSingleton<IAuthorizationHandler, AdminAccessHandler>();
-            services.AddSingleton<IAuthorizationHandler, UserAccessHandler>();
-
-            services.AddAuthorization(options => {
-                options.AddPolicy("AdminAccessAuthorize",
-                    policy => policy.Requirements.Add(new AdminAccessRequirement()));
-                options.AddPolicy("UserAccessAuthorize",
-                    policy => policy.Requirements.Add(new AdminAccessRequirement()));
-                });
 
             services.AddScoped<ICatalogService, CatalogService>();
 
@@ -138,6 +156,7 @@ namespace WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
