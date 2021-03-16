@@ -13,25 +13,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.13" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
-    <Compile Remove="intellisense-tobedeleted\dist\**" />
     <Content Remove="$(SpaRoot)**" />
-    <Content Remove="intellisense-tobedeleted\dist\**" />
-    <EmbeddedResource Remove="intellisense-tobedeleted\dist\**" />
     <None Remove="$(SpaRoot)**" />
-    <None Remove="intellisense-tobedeleted\dist\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -41,9 +37,13 @@
 
   <ItemGroup>
     <None Remove="ClientApp\src\app\actions\home.actions.ts" />
+    <None Remove="ClientApp\src\app\guards\auth.guard.ts" />
     <None Remove="ClientApp\src\app\home\home.reducers.ts" />
-    <None Remove="ClientApp\src\app\data-service\data.service.ts" />
+    <None Remove="ClientApp\src\app\models\User.ts" />
+    <None Remove="ClientApp\src\app\models\UserRole.ts" />
+    <None Remove="ClientApp\src\app\services\auth.service.ts" />
     <None Remove="ClientApp\src\app\SearchForm.ts" />
+    <None Remove="ClientApp\src\app\services\user.service.ts" />
     <None Remove="ClientApp\src\app\sidebar\sidebar.component.ts" />
   </ItemGroup>
 
@@ -52,15 +52,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="intellisense-tobedeleted\" />
-    <Folder Include="Middleware\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\app\actions\home.actions.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\data-service\data.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\guards\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\User.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\models\UserRole.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\auth.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\reducers\home.reducers.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\SearchForm.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\services\user.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\sidebar\sidebar.component.ts" />
   </ItemGroup>
 
